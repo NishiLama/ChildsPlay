@@ -1,0 +1,71 @@
+<script src="babel.min.js"></script>
+<script src="react.development.js"></script>
+<script src="react-dom.development.js"></script>
+<style>
+.active{
+    color: red;
+    text-decoration: line-through;
+}
+</style>
+
+<div id="root"></div>
+
+<script type="text/babel">
+
+class App extends React.Component{
+
+    constructor(){
+        super();
+        this.state={
+            players:[]
+        }
+    }
+
+    fnClick(){
+        let nameRef=this.refs.name;
+        let name=nameRef.value;
+        let currData=this.state.players;
+        if(currData.includes(name)){
+            alert('Player already there');
+        }else{
+            currData.push(name);
+            this.setState({
+                players:currData
+            })
+            nameRef.value=""
+        }
+    }
+
+    fnPlayerClick(eve){
+        eve.stopPropagation();
+        let ele=eve.target;
+        let classList=ele.classList;
+        if(classList.contains('active')){
+            classList.remove('active');
+        }else{
+            classList.add('active');
+        }
+    }
+   
+    render(){
+        return <div>
+                   <p>  Name:<input ref="name" />
+                     <button onClick={this.fnClick.bind(this)}>click</button>
+                    </p>
+                   <h3>Players</h3>
+                   {
+                  this.state.players.length > 0 ?
+                   <ol onClick={this.fnPlayerClick.bind(this)}>
+                     {this.state.players.map((v,i)=>{
+                         return <li key={i}>{v}</li>
+                     })}
+                   </ol>
+                   :
+                   <div>No Data Found</div>
+                   }
+               </div>
+    }
+}
+
+ReactDOM.render(<App />,document.getElementById('root'))
+</script>

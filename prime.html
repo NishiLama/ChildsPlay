@@ -1,0 +1,76 @@
+
+<script src="react.development.js"></script>
+<script src="react-dom.development.js"></script>
+<script src="babel.min.js"></script>
+
+<div></div>
+
+
+
+
+
+<script type="text/babel" >
+  
+   const App=()=>{
+       const [result,setResult]=React.useState('');
+       const noRef=React.createRef();
+
+       const fnGetPrimes=()=>{
+          let no=noRef.current.value;
+          if(isNaN(no)){
+              alert('Please enter no')
+              return;
+          }
+          let primes=[]
+          for(let i=2;i<=no;i++){
+              let isPrime= fnCheckPrime(i);
+              if(isPrime){
+                  primes.push(i);
+              }
+          }
+          
+          setResult(primes.join())
+       }
+
+       const fnCheckPrime=(no)=>{
+          
+          let factors=0;
+          for(let i=1;i<=no;i++){
+               if(no%i==0){
+                   factors++
+               }
+          }
+
+          if(factors==2){
+            return true;
+          }
+          return false;
+      }
+
+      const fnClick=()=>{
+        let no=noRef.current.value;
+          if(isNaN(no)){
+              alert('Please enter no')
+              return;
+          }
+          let isPrime= fnCheckPrime(no);
+          setResult(isPrime ? 'Given NO is Prime' : 'Given No is not a Prime')
+      }
+
+     
+      
+       return <div>
+
+           <p>Enter no:<input ref={noRef} /></p>
+           <button onClick={fnGetPrimes}>Get Primes</button>
+           <button onClick={fnClick}>Check Prime</button>
+           <h3>{result}</h3>
+       </div>
+   }
+
+
+  //render your content inside container
+ 
+  ReactDOM.render(<App />, document.querySelector('div'))
+
+</script>

@@ -1,0 +1,80 @@
+<script src="babel.min.js"></script>
+<script src="react.development.js"></script>
+<script src="react-dom.development.js"></script>
+<style>
+.active{
+    color: red;
+    text-decoration: line-through;
+}
+</style>
+
+<div id="root"></div>
+
+<script type="text/babel">
+
+class ListItem extends React.Component{
+    constructor(){
+        super();
+        this.state={
+            isActive:false
+        }
+    }
+    fnPlayerClick(eve){
+        eve.stopPropagation();
+        this.setState({
+            isActive:!this.state.isActive
+        })
+    }
+    render(){
+        return <li onClick={this.fnPlayerClick.bind(this)} className={this.state.isActive && 'active'}>{this.props.v}</li> 
+    }
+}
+
+class App extends React.Component{
+
+    constructor(){
+        super();
+        this.state={
+            players:[],
+        }
+    }
+
+    fnClick(){
+        let nameRef=this.refs.name;
+        let name=nameRef.value;
+        let currData=this.state.players;
+        if(currData.includes(name)){
+            alert('Player already there');
+        }else{
+            currData.push(name);
+            this.setState({
+                players:currData
+            })
+            nameRef.value=""
+        }
+    }
+
+    
+   
+    render(){
+        return <div>
+                   <p>  Name:<input ref="name" />
+                     <button onClick={this.fnClick.bind(this)}>click</button>
+                    </p>
+                   <h3>Players</h3>
+                   {
+                  this.state.players.length > 0 ?
+                   <ol>
+                     {this.state.players.map((v,i)=>{
+                         return <ListItem key={i} v={v}/>
+                     })}
+                   </ol>
+                   :
+                   <div>No Data Found</div>
+                   }
+               </div>
+    }
+}
+
+ReactDOM.render(<App />,document.getElementById('root'))
+</script>
